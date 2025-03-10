@@ -1,41 +1,41 @@
-import Swiper from 'swiper';
-import { Scrollbar, Mousewheel, Keyboard, Pagination } from 'swiper/modules';
+// import Swiper from 'swiper';
+// import { Scrollbar, Mousewheel, Keyboard, Pagination } from 'swiper/modules';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 gsap.registerPlugin(ScrollTrigger);
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  const platformAiSwiper = new Swiper('.platform-ai-swiper_container', {
-    modules: [Pagination, Mousewheel, Keyboard],
-    wrapperClass: 'platform-ai-swiper_wrapper',
-    slideClass: 'platform-ai-swiper_slide',
-    slidesPerView: 'auto',
-    speed: 300,
-    spaceBetween: 32,
-    a11y: true,
-    grabCursor: true,
-    keyboard: {
-      onlyInViewport: true,
-    },
-    mousewheel: { forceToAxis: true },
-    pagination: {
-      clickable: true,
-      el: '.swiper-pagination',
-      bulletClass: 'swiper-bullet',
-      bulletActiveClass: 'swiper-bullet-active',
-    },
-    breakpoints: {
-      992: {
-        spaceBetween: 48,
-      },
-    },
-    on: {
-      beforeInit: (swiper) => {
-        swiper.wrapperEl.style.gridColumnGap = 'unset';
-      },
-    },
-  });
+  // const platformAiSwiper = new Swiper('.platform-ai-swiper_container', {
+  //   modules: [Pagination, Mousewheel, Keyboard],
+  //   wrapperClass: 'platform-ai-swiper_wrapper',
+  //   slideClass: 'platform-ai-swiper_slide',
+  //   slidesPerView: 'auto',
+  //   speed: 300,
+  //   spaceBetween: 32,
+  //   a11y: true,
+  //   grabCursor: true,
+  //   keyboard: {
+  //     onlyInViewport: true,
+  //   },
+  //   mousewheel: { forceToAxis: true },
+  //   pagination: {
+  //     clickable: true,
+  //     el: '.swiper-pagination',
+  //     bulletClass: 'swiper-bullet',
+  //     bulletActiveClass: 'swiper-bullet-active',
+  //   },
+  //   breakpoints: {
+  //     992: {
+  //       spaceBetween: 48,
+  //     },
+  //   },
+  //   on: {
+  //     beforeInit: (swiper) => {
+  //       swiper.wrapperEl.style.gridColumnGap = 'unset';
+  //     },
+  //   },
+  // });
 
   //   if (document.querySelectorAll('.platform-swiper_wrapper .platform-swiper_slide').length > 3) {
   //     // OFFER SWIPER CODE

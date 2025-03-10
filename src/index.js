@@ -9,7 +9,7 @@ window.Webflow.push(() => {
       trigger: '.section_home-hero',
       start: '50% center',
       end: '55% center',
-      markers: true,
+      markers: false,
       // scrub: true,
       toggleActions: 'play none reverse none',
     },
