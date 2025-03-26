@@ -94,49 +94,6 @@ window.Webflow.push(() => {
   /*-------------------------------------------------------*/
 
   /*-------------------------------------------------------*/
-  /* SHARE FUNCTIONALTIY                                   */
-  /*-------------------------------------------------------*/
-
-  const title = document.title,
-    // description = document.querySelector('meta[name="description"]')?.getAttribute('content') || '',
-    url = new URL(document.URL).origin + new URL(document.URL).pathname;
-
-  document
-    .querySelector('[data-name="twitter"]')
-    .setAttribute(
-      'href',
-      `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}: ${encodeURIComponent(
-        url
-      )}`
-    );
-  document
-    .querySelector('[data-name="email"]')
-    .setAttribute(
-      'href',
-      `mailto:?subject=${encodeURIComponent(title)}&body=${encodeURIComponent(url)}`
-    );
-  document
-    .querySelector('[data-name="linkedin"]')
-    .setAttribute(
-      'href',
-      `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`
-    );
-
-  document.querySelector('[data-name="url"]').addEventListener('click', function (e) {
-    e.preventDefault();
-    let clipboardInput = document.createElement('input');
-    document.body.appendChild(clipboardInput);
-    clipboardInput.value = url;
-    clipboardInput.select();
-    document.execCommand('copy');
-    document.body.removeChild(clipboardInput);
-  });
-
-  /*-------------------------------------------------------*/
-  /* SHARE FUNCTIONALTIY                                   */
-  /*-------------------------------------------------------*/
-
-  /*-------------------------------------------------------*/
   /* NUMBER ANIMATION                                      */
   /*-------------------------------------------------------*/
 
