@@ -22,8 +22,24 @@ window.Webflow.push(() => {
           cssClass: '',
           submitButtonClass: 'button',
           target: `[data-element="hubspot-form"][hubspot-form-index="${i}"]`,
-          onFormSubmitted: () => {
-            form.style.display = 'none';
+
+          onFormSubmitted: (form, data) => {
+            // console.log(form, data);
+            // if (
+            //   form.getAttribute('formid') === '' &&
+            //   data.submissionValues.key === ('hoi' || 'bye')
+            // ) {
+            //   window.location.replace(
+            //     redirectUrls[Math.floor(Math.random() * redirectUrls.length)]
+            //   );
+            // }
+            // form.style.display = 'none';
+            // document.querySelectorAll('[data-element="hubspot-show]').forEach((el) => {
+            //   el.style.display = 'block';
+            // });
+            // document.querySelectorAll('[data-element="hubspot-hide]').forEach((el) => {
+            //   el.style.display = 'none';
+            // });
             // form.nextSibling.style.display = 'flex';
             // form.nextSibling.scrollIntoView({ behavior: 'instant' });
           },

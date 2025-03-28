@@ -13,6 +13,7 @@ const ENTRY_POINTS = [
   'src/index.js',
   'src/platform.js',
   'src/company.js',
+  'src/demo.js',
 ];
 
 // Config dev serving
