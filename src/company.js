@@ -13,7 +13,7 @@ window.Webflow.push(() => {
     slideClass: 'chill-swiper_slide',
     slidesPerView: 'auto',
     speed: 300,
-    spaceBetween: 16,
+    spaceBetween: 24,
     a11y: true,
     grabCursor: true,
     keyboard: {
