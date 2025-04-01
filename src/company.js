@@ -5,15 +5,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  console.log('hello 123');
-
   const platformAiSwiper = new Swiper('.chill-swiper_container', {
     //modules: [Pagination, Mousewheel, Keyboard],
     wrapperClass: 'chill-swiper_wrapper',
     slideClass: 'chill-swiper_slide',
     slidesPerView: 'auto',
     speed: 300,
-    spaceBetween: 16,
+    spaceBetween: 24,
     a11y: true,
     grabCursor: true,
     keyboard: {

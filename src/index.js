@@ -4,26 +4,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  gsap.to('.section_home-hero', {
-    scrollTrigger: {
-      trigger: '.section_home-hero',
-      start: '50% center',
-      end: '55% center',
-      markers: false,
-      // scrub: true,
-      toggleActions: 'play none reverse none',
-    },
-    duration: 0.5,
-    ease: 'power1.inOut',
-    scale: 0.96,
-    transformOrigin: 'top center',
-    // marginLeft: '2.5rem',
-    // marginRight: '2.5rem',
-    // //minHeight: 'calc(100dvh - 5.5rem - 2.5rem)',
-    borderBottomLeftRadius: '2rem',
-    borderBottomRightRadius: '2rem',
-  });
-
   const textRows = document.querySelectorAll('h1 .line-changer');
   const totalRows = textRows.length;
   let currentIndex = 0;
@@ -49,10 +29,50 @@ window.Webflow.push(() => {
   // Start the animation loop
   setTimeout(animateText, 2000);
 
+  // gsap.set('.autotab_col1', { xPercent: -50, opacity: 0 });
+  // gsap.set('.autotab_col2', { x: '-30rem' });
+  // gsap.set('.autotab_image-wrapper:nth-child(1)', { zIndex: 5, backgroundColor: 'white' });
+
+  // const tl = gsap.timeline({
+  //   scrollTrigger: {
+  //     trigger: '.autotab_component',
+  //     start: '25% center',
+  //     end: '25% center',
+  //     markers: true,
+  //     toggleActions: 'play none reverse none',
+  //   },
+  // });
+
+  // tl.to('.autotab_col2', {
+  //   duration: 1,
+  //   ease: 'power2.inOut',
+  //   x: '0rem',
+  // })
+  //   .to(
+  //     '.autotab_col1',
+  //     {
+  //       xPercent: 0,
+  //       opacity: 1,
+  //       duration: 1,
+  //       ease: 'power2.inOut',
+  //     },
+  //     '<+0.05'
+  //   )
+  //   .to(
+  //     '.autotab_image-wrapper:nth-child(1)',
+  //     {
+  //       opacity: 0,
+  //       // visibility: 'hidden',
+  //       duration: 1,
+  //       ease: 'power2.inOut',
+  //     },
+  //     '<+0.05'
+  //   );
+
   const tabComponent = document.querySelector('.autotab_component');
   const tabs = tabComponent.querySelectorAll('.autotab_item');
   const imageContainer = tabComponent.querySelector('.autotab_col2');
-  const images = imageContainer.querySelectorAll('.autotab_image-wrapper');
+  const images = imageContainer.querySelectorAll('.autotab_image-wrapper:nth-child(n + 2)');
   const AUTO_PLAY_DELAY = 6000; // 6 seconds
   let currentTabIndex = 0;
   let isHovering = false;
@@ -60,6 +80,45 @@ window.Webflow.push(() => {
   let scrollTrigger;
 
   function setupTabs() {
+    gsap.set('.autotab_col1', { xPercent: -50, opacity: 0 });
+    gsap.set('.autotab_col2', { x: '-30rem' });
+    gsap.set('.autotab_image-wrapper:nth-child(1)', { zIndex: 5, backgroundColor: 'white' });
+
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: '.autotab_component',
+        start: 'top 60%',
+        end: '40% center',
+        markers: true,
+        toggleActions: 'none play none reverse',
+      },
+    });
+
+    tl.to('.autotab_col2', {
+      duration: 1,
+      ease: 'power2.inOut',
+      x: '0rem',
+    })
+      .to(
+        '.autotab_col1',
+        {
+          xPercent: 0,
+          opacity: 1,
+          duration: 1,
+          ease: 'power2.inOut',
+        },
+        '<+0.05'
+      )
+      .to(
+        '.autotab_image-wrapper:nth-child(1)',
+        {
+          opacity: 0,
+          duration: 1,
+          ease: 'power2.inOut',
+        },
+        '<+0.05'
+      );
+
     tabs.forEach((item, index) => {
       const head = item.querySelector('.autotab_head');
       const body = item.querySelector('.autotab_body');
