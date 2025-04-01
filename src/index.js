@@ -89,7 +89,7 @@ window.Webflow.push(() => {
         trigger: '.autotab_component',
         start: 'top 60%',
         end: '40% center',
-        markers: true,
+        // markers: true,
         toggleActions: 'none play none reverse',
       },
     });

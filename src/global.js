@@ -14,7 +14,7 @@ window.Webflow.push(() => {
         trigger: '.section_hero',
         start: '50% center',
         end: '55% center',
-        markers: true,
+        // markers: true,
         toggleActions: 'play none reverse none',
       },
     });
