@@ -5,40 +5,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  const platformAiSwiper = new Swiper('.chill-swiper_container', {
-    //modules: [Pagination, Mousewheel, Keyboard],
-    wrapperClass: 'chill-swiper_wrapper',
-    slideClass: 'chill-swiper_slide',
-    slidesPerView: 'auto',
-    speed: 300,
-    spaceBetween: 24,
-    a11y: true,
-    grabCursor: true,
-    keyboard: {
-      onlyInViewport: true,
-    },
-    mousewheel: { forceToAxis: true },
-    breakpoints: {
-      768: {
-        spaceBetween: 24,
-      },
-    },
-    navigation: {
-      nextEl: '.swiper_button.is-chill.is-next',
-      prevEl: '.swiper_button.is-chill.is-prev',
-    },
-    on: {
-      beforeInit: (swiper) => {
-        swiper.wrapperEl.style.gridColumnGap = 'unset';
-      },
-    },
-  });
-
-  let customIndex = 0; // Initialize custom index
+  // TEAM IMAGES
+  let customIndex = 0;
   let lastActiveIndex = 0;
 
   const setCirclePosition = (slide, index) => {
-    console.log(index);
     const circle = slide.querySelector('.team_circle');
     const positions = [
       { inset: '0% auto auto 0%' }, // 4n+1
@@ -47,7 +18,6 @@ window.Webflow.push(() => {
       { inset: 'auto auto 0% 0%' }, // 4n+4
     ];
 
-    // Use a different approach to handle negative indices
     const positionIndex = ((index % 4) + 4) % 4;
     gsap.set(circle, positions[positionIndex]);
   };
@@ -61,12 +31,10 @@ window.Webflow.push(() => {
       crossFade: true,
     },
     slidesPerView: 'auto',
-    speed: 300,
+    speed: 400,
     a11y: true,
     on: {
       slideChangeTransitionStart: (swiper) => {
-        console.log(swiper);
-
         // Determine slide direction
         const currentActiveIndex = swiper.activeIndex;
         const totalSlides = swiper.slides.length;
@@ -78,10 +46,10 @@ window.Webflow.push(() => {
           (lastActiveIndex === totalSlides - 1 && currentActiveIndex === 0)
         ) {
           customIndex++;
-          console.log('next', customIndex);
+          // console.log('next', customIndex);
         } else {
           customIndex--;
-          console.log('prev', customIndex);
+          // console.log('prev', customIndex);
         }
 
         setCirclePosition(swiper.slides[currentActiveIndex], customIndex);
@@ -103,7 +71,7 @@ window.Webflow.push(() => {
       crossFade: true,
     },
     slidesPerView: 1,
-    speed: 300,
+    speed: 400,
     a11y: true,
     navigation: {
       nextEl: '.swiper_button.is-alternate.is-next',
@@ -140,4 +108,31 @@ window.Webflow.push(() => {
       },
     },
   });
+  // TEAM IMAGES
+
+  // TEAM CHILL SWIPER
+  const teamChillSwiper = new Swiper('.chill-swiper_container', {
+    // modules: [Pagination, Mousewheel, Keyboard],
+    wrapperClass: 'chill-swiper_wrapper',
+    slideClass: 'chill-swiper_slide',
+    slidesPerView: 'auto',
+    speed: 400,
+    spaceBetween: 24,
+    a11y: true,
+    grabCursor: true,
+    keyboard: {
+      onlyInViewport: true,
+    },
+    mousewheel: { forceToAxis: true },
+    navigation: {
+      nextEl: '.swiper_button.is-chill.is-next',
+      prevEl: '.swiper_button.is-chill.is-prev',
+    },
+    on: {
+      beforeInit: (swiper) => {
+        swiper.wrapperEl.style.gridColumnGap = 'unset';
+      },
+    },
+  });
+  // TEAM CHILL SWIPER
 });

@@ -6,102 +6,18 @@ gsap.registerPlugin(ScrollTrigger);
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
-  // const platformAiSwiper = new Swiper('.platform-ai-swiper_container', {
-  //   modules: [Pagination, Mousewheel, Keyboard],
-  //   wrapperClass: 'platform-ai-swiper_wrapper',
-  //   slideClass: 'platform-ai-swiper_slide',
-  //   slidesPerView: 'auto',
-  //   speed: 300,
-  //   spaceBetween: 32,
-  //   a11y: true,
-  //   grabCursor: true,
-  //   keyboard: {
-  //     onlyInViewport: true,
-  //   },
-  //   mousewheel: { forceToAxis: true },
-  //   pagination: {
-  //     clickable: true,
-  //     el: '.swiper-pagination',
-  //     bulletClass: 'swiper-bullet',
-  //     bulletActiveClass: 'swiper-bullet-active',
-  //   },
-  //   breakpoints: {
-  //     992: {
-  //       spaceBetween: 48,
-  //     },
-  //   },
-  //   on: {
-  //     beforeInit: (swiper) => {
-  //       swiper.wrapperEl.style.gridColumnGap = 'unset';
-  //     },
-  //   },
-  // });
-
-  //   if (document.querySelectorAll('.platform-swiper_wrapper .platform-swiper_slide').length > 3) {
-  //     // OFFER SWIPER CODE
-  //     const BREAKPOINT = 991;
-  //     const DEBOUNCE_DELAY = 50;
-  //     const swiperArgs = {
-  //       modules: [Keyboard, Mousewheel],
-  //       wrapperClass: 'platform-swiper_wrapper',
-  //       slideClass: 'platform-swiper_slide',
-  //       slidesPerView: 'auto',
-  //       speed: 300,
-  //       spaceBetween: 32,
-  //       a11y: true,
-  //       grabCursor: true,
-  //       keyboard: false,
-  //       mousewheel: { forceToAxis: true },
-  //       keyboard: {
-  //         onlyInViewport: true,
-  //       },
-  //       on: {
-  //         beforeInit: (swiper) => {
-  //           swiper.wrapperEl.style.gridColumnGap = 'unset';
-  //         },
-  //       },
-  //     };
-  //     let packageSwiper = null;
-  //     const handleResize = () => {
-  //       const newWindowWidth = window.innerWidth || document.documentElement.clientWidth;
-  //       if (newWindowWidth >= BREAKPOINT) {
-  //         if (!packageSwiper) {
-  //           packageSwiper = new Swiper('.platform-swiper_container', swiperArgs);
-  //         } else {
-  //           packageSwiper.update();
-  //         }
-  //       } else if (packageSwiper) {
-  //         packageSwiper.destroy(true, true);
-  //         packageSwiper = null;
-  //       }
-  //     };
-  //     window.addEventListener('resize', debounce(handleResize, DEBOUNCE_DELAY));
-  //     handleResize();
-  //     // OFFER SWIPER CODE
-  //   }
-  // });
-
-  // // GENERIC DEBOUNCE FUNCTION
-  // function debounce(func, delay) {
-  //   let timeoutId;
-  //   return (...args) => {
-  //     clearTimeout(timeoutId);
-  //     timeoutId = setTimeout(() => func(...args), delay);
-  //   };
-  // }
-
+  // STICKY IMAGES
   let mm = gsap.matchMedia();
 
   mm.add('(min-width: 991px)', () => {
     const rows = Array.from(document.querySelectorAll('.sticky_row'));
     const images = Array.from(document.querySelectorAll('.sticky_image-wrapper:not(.show-tablet)'));
-
-    console.log(images);
+    const offset = images[0].offsetHeight;
 
     const animationConfig = {
-      yOffsetFactor: 2,
-      duration: 0.45,
-      ease: 'power1.inOut',
+      yOffsetFactor: 0,
+      duration: 0.5,
+      ease: 'power2.inOut',
     };
 
     let currentAnimation = null;
@@ -112,7 +28,7 @@ window.Webflow.push(() => {
 
       ScrollTrigger.create({
         trigger: row.querySelector('.sticky_content'),
-        start: 'top 55%',
+        start: `top center+=${offset / 2}px`,
         // markers: true,
         onEnter: () => animateImages(index),
         onLeaveBack: () => animateImages(index - 1),
@@ -167,4 +83,33 @@ window.Webflow.push(() => {
       .slice(1)
       .forEach((img) => gsap.set(img, { opacity: 0, yPercent: animationConfig.yOffsetFactor }));
   });
+  // STICKY IMAGES
+
+  // AI EMPOWERED SWIPER
+  const platformAiSwiper = new Swiper('.platform-ai-swiper_container', {
+    // modules: [Pagination, Mousewheel, Keyboard],
+    wrapperClass: 'platform-ai-swiper_wrapper',
+    slideClass: 'platform-ai-swiper_slide',
+    slidesPerView: 'auto',
+    speed: 400,
+    spaceBetween: 24,
+    a11y: true,
+    grabCursor: true,
+    keyboard: {
+      onlyInViewport: true,
+    },
+    mousewheel: { forceToAxis: true },
+    pagination: {
+      clickable: true,
+      el: '.swiper-pagination',
+      bulletClass: 'swiper-bullet',
+      bulletActiveClass: 'swiper-bullet-active',
+    },
+    on: {
+      beforeInit: (swiper) => {
+        swiper.wrapperEl.style.gridColumnGap = 'unset';
+      },
+    },
+  });
+  // AI EMPOWERED SWIPER
 });

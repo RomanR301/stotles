@@ -1,56 +1,154 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Observer } from 'gsap/Observer';
-import CustomEase from 'gsap/CustomEase';
-import Swiper from 'swiper';
-import { Keyboard, Mousewheel } from 'swiper/modules';
+// import Swiper from 'swiper';
+// import { Keyboard, Mousewheel } from 'swiper/modules';
 
-gsap.registerPlugin(ScrollTrigger);
-gsap.registerPlugin(CustomEase);
-gsap.registerPlugin(Observer);
+gsap.registerPlugin(ScrollTrigger, Observer);
 
 window.Webflow ||= [];
 window.Webflow.push(() => {
   let mm = gsap.matchMedia();
 
-  // add a media query. When it matches, the associated function will run
-  mm.add('(min-width: 991px)', () => {
-    // Create a timeline
-    const heroTimeline = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.section_hero',
-        start: '50% center',
-        end: '55% center',
-        // markers: true,
-        toggleActions: 'play none reverse none',
+  // Navigation
+  const nav = document.querySelector('.nav_component');
+  if (nav) {
+    // Set initial state
+    gsap.set(nav, { yPercent: 0 });
+
+    let lastScrollTop = 0;
+    let scrollThreshold = 50; // Debounce threshold in pixels
+    let navVisible = true;
+    let scrollDistance = 0;
+    let lastDirection = null;
+
+    // Create ScrollTrigger for nav hide/show behavior
+    ScrollTrigger.create({
+      start: 'top top',
+      end: 'bottom bottom',
+      onUpdate: (self) => {
+        const scrollTop = self.scroll();
+        const currentDirection = scrollTop > lastScrollTop ? 'down' : 'up';
+
+        // Check if direction changed
+        if (lastDirection !== currentDirection) {
+          // Direction changed, reset distance counter
+          scrollDistance = 0;
+          lastDirection = currentDirection;
+        } else {
+          // Still going in the same direction, add to the distance
+          scrollDistance += Math.abs(scrollTop - lastScrollTop);
+        }
+
+        // Only trigger animation after scrolling threshold distance in a direction
+        if (scrollDistance > scrollThreshold) {
+          if (currentDirection === 'down' && navVisible) {
+            // Hide nav when scrolling down
+            gsap.to(nav, {
+              yPercent: -100,
+              duration: 0.5,
+              ease: 'power2.inOut',
+            });
+            navVisible = false;
+            scrollDistance = 0; // Reset after animation
+          } else if (currentDirection === 'up' && !navVisible) {
+            // Show nav when scrolling up
+            gsap.to(nav, {
+              yPercent: 0,
+              duration: 0.5,
+              ease: 'power2.inOut',
+            });
+            navVisible = true;
+            scrollDistance = 0; // Reset after animation
+          }
+        }
+
+        // Save current scroll position for next comparison
+        lastScrollTop = scrollTop;
       },
     });
+  }
 
-    // Add animations to the timeline
-    heroTimeline
-      .to('.section_hero', {
-        duration: 0.5,
-        ease: 'power1.inOut',
-        transformOrigin: 'top center',
-        paddingLeft: '6rem',
-        paddingRight: '6rem',
-        paddingBottom: '6rem',
-      })
-      .to(
-        '.section_hero .background-wrapper',
-        {
-          // left: '-4.5rem',
-          // right: '-4.5rem',
-          width: 'calc(100% + 9rem)',
-          duration: 0.5,
-          ease: 'power1.inOut',
+  if (document.querySelector('.section_hero')) {
+    // add a media query. When it matches, the associated function will run
+    mm.add('(min-width: 991px)', () => {
+      if (document.querySelector('.section_hero .svg-graphic')) {
+        gsap.fromTo(
+          '.section_hero .svg-graphic',
+          {
+            opacity: 0,
+            scale: 0.8,
+          },
+          {
+            delay: 0.35,
+            duration: 1.5,
+            ease: 'power1.out',
+            opacity: 1,
+            scale: 1,
+            stagger: {
+              each: 0.0075,
+              from: 'random',
+            },
+          }
+        );
+      }
+
+      // Create a timeline
+      const heroTimeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.section_hero',
+          start: 'bottom bottom-=50px',
+          // markers: true,
+          onEnter: () => {
+            gsap
+              .timeline()
+              .to('.section_hero', {
+                duration: 0.5,
+                ease: 'power1.out',
+
+                transformOrigin: 'top center',
+                paddingLeft: '6rem',
+                paddingRight: '6rem',
+                paddingBottom: '6rem',
+              })
+              .to(
+                '.section_hero-wrapper',
+                {
+                  duration: 0.5,
+                  ease: 'power1.out',
+                  borderRadius: '2.5rem',
+                },
+                '<'
+              );
+          },
+          onLeaveBack: () => {
+            gsap
+              .timeline()
+              .to('.section_hero', {
+                duration: 0.5,
+                ease: 'power1.out',
+
+                transformOrigin: 'top center',
+                paddingLeft: '1.5rem',
+                paddingRight: '1.5rem',
+                paddingBottom: '1.5rem',
+              })
+              .to(
+                '.section_hero-wrapper',
+                {
+                  duration: 0.5,
+                  ease: 'power1.out',
+                  borderRadius: '1.25rem',
+                },
+                '<'
+              );
+          },
         },
-        '<'
-      ); // The "<" makes this animation start at the same time as the previous one
-  });
+      });
+    });
+  }
 
   if (document.querySelectorAll('[data-element=hubspot-form]').length) {
-    console.log(document.querySelectorAll('[data-element=hubspot-form]'));
     // Create a new script element
     let script = document.createElement('script');
     script.type = 'text/javascript';
@@ -72,29 +170,10 @@ window.Webflow.push(() => {
           submitButtonClass: 'button',
           target: `[data-element="hubspot-form"][hubspot-form-index="${i}"]`,
 
-          onFormSubmitted: (form, data) => {
-            // console.log(form, data);
-            // if (
-            //   form.getAttribute('formid') === '' &&
-            //   data.submissionValues.key === ('hoi' || 'bye')
-            // ) {
-            //   window.location.replace(
-            //     redirectUrls[Math.floor(Math.random() * redirectUrls.length)]
-            //   );
-            // }
-            // form.style.display = 'none';
-            // document.querySelectorAll('[data-element="hubspot-show]').forEach((el) => {
-            //   el.style.display = 'block';
-            // });
-            // document.querySelectorAll('[data-element="hubspot-hide]').forEach((el) => {
-            //   el.style.display = 'none';
-            // });
-            // form.nextSibling.style.display = 'flex';
-            // form.nextSibling.scrollIntoView({ behavior: 'instant' });
+          //onFormSubmitted: (form, data) => {},
+          onFormReady: () => {
+            ScrollTrigger.refresh();
           },
-          // onFormReady: () => {
-          //   ScrollTrigger.refresh();
-          // },
         });
       });
     });
@@ -173,27 +252,22 @@ window.Webflow.push(() => {
   });
   // ————— LOGO SLIDER MARQUEE ————— //
 
-  // if (document.querySelectorAll('.platform-swiper_wrapper .platform-swiper_slide').length > 3) {
   // OFFER SWIPER CODE
   let slideCount = document.querySelectorAll(
     '.platform-swiper_wrapper .platform-swiper_slide'
   ).length;
-  // let BREAKPOINT = 1224;
-
   const BREAKPOINT = Math.min(slideCount * 360 + (slideCount - 1) * 24 + 80, 1320);
-  console.log(BREAKPOINT);
 
   const DEBOUNCE_DELAY = 50;
   const swiperArgs = {
-    modules: [Keyboard, Mousewheel],
+    // modules: [Keyboard, Mousewheel],
     wrapperClass: 'platform-swiper_wrapper',
     slideClass: 'platform-swiper_slide',
     slidesPerView: 'auto',
-    speed: 300,
+    speed: 400,
     spaceBetween: 24,
     a11y: true,
     grabCursor: true,
-    keyboard: false,
     mousewheel: { forceToAxis: true },
     keyboard: {
       onlyInViewport: true,
@@ -229,7 +303,6 @@ window.Webflow.push(() => {
     handleResize();
   }
   // OFFER SWIPER CODE
-  // }
 
   // GENERIC DEBOUNCE FUNCTION
   function debounce(func, delay) {
