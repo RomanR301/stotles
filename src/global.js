@@ -105,7 +105,6 @@ window.Webflow.push(() => {
               .to('.section_hero', {
                 duration: 0.5,
                 ease: 'power1.out',
-
                 transformOrigin: 'top center',
                 paddingLeft: '6rem',
                 paddingRight: '6rem',
@@ -117,6 +116,28 @@ window.Webflow.push(() => {
                   duration: 0.5,
                   ease: 'power1.out',
                   borderRadius: '2.5rem',
+                },
+                '<'
+              )
+              .to(
+                '.section_hero_vh',
+                {
+                  duration: 0.5,
+                  ease: 'power1.out',
+                  paddingTop: '0rem',
+                  paddingBottom: '0rem',
+                  position: 'relative',
+                  top: '2.25rem',
+                  minHeight: 'calc(100dvh - 11.5rem)',
+                },
+                '<'
+              )
+              .to(
+                '.background-wrapper',
+                {
+                  duration: 0.5,
+                  ease: 'power1.out',
+                  top: document.querySelector('.demo-hero_illustration') ? '-2.25rem' : 0,
                 },
                 '<'
               );
@@ -141,10 +162,54 @@ window.Webflow.push(() => {
                   borderRadius: '1.25rem',
                 },
                 '<'
+              )
+              .to(
+                '.section_hero_vh',
+                {
+                  duration: 0.5,
+                  ease: 'power1.out',
+                  paddingTop: '2.25rem',
+                  paddingBottom: '2.25rem',
+                  position: 'relative',
+                  top: '0rem',
+                  minHeight: 'calc(100dvh - 7rem)',
+                },
+                '<'
+              )
+              .to(
+                '.background-wrapper',
+                {
+                  duration: 0.5,
+                  ease: 'power1.out',
+                  top: 0,
+                },
+                '<'
               );
+            // .to(
+            //   '.section_hero_vh .background-wrapper',
+            //   {
+            //     duration: 0.5,
+            //     ease: 'power1.out',
+            //     top: '0',
+            //   },
+            //   '<'
+            // );
           },
         },
       });
+    });
+  }
+
+  const leadIdKey = 'lead_id';
+  let leadId = localStorage.getItem(leadIdKey) || generateGUID();
+  localStorage.setItem(leadIdKey, leadId);
+
+  // Function to generate a GUID
+  function generateGUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+      const r = (Math.random() * 16) | 0,
+        v = c === 'x' ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
     });
   }
 
@@ -171,8 +236,50 @@ window.Webflow.push(() => {
           target: `[data-element="hubspot-form"][hubspot-form-index="${i}"]`,
 
           //onFormSubmitted: (form, data) => {},
-          onFormReady: () => {
+          onFormReady: (hubspotForm, data) => {
             ScrollTrigger.refresh();
+            console.log(hubspotForm[0]);
+
+            // Track which fields have been interacted with and if form interaction has been logged
+            const interactedFields = new Set();
+            let formInteractionTracked = false;
+
+            // Add listeners to all form inputs
+            hubspotForm[0].querySelectorAll('input, select, textarea').forEach((input) => {
+              const inputName = input.name || input.id || input.type;
+
+              // Use a single function for both events
+              const trackInteraction = function () {
+                // Track first overall form interaction
+                if (!formInteractionTracked) {
+                  formInteractionTracked = true;
+
+                  window.dataLayer.push({
+                    event: 'form_started',
+                    form_id: hubspotForm[0].getAttribute('id'),
+                    form_url: hubspotForm[0].getAttribute('action'),
+                  });
+                }
+
+                // Track first interaction with specific field
+                if (!interactedFields.has(inputName)) {
+                  window.dataLayer.push({
+                    event: 'form_interaction',
+                    form_id: hubspotForm[0].getAttribute('id'),
+                    form_url: hubspotForm[0].getAttribute('action'),
+                    field_name: inputName,
+                  });
+
+                  interactedFields.add(inputName);
+                }
+              };
+
+              // Listen for appropriate events based on input type
+              input.addEventListener('input', trackInteraction);
+              if (input.type === 'checkbox' || input.type === 'radio') {
+                input.addEventListener('change', trackInteraction);
+              }
+            });
           },
         });
       });

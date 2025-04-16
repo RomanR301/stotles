@@ -32,7 +32,19 @@ window.Webflow.push(() => {
   // Main event listener
   window.addEventListener('message', function (event) {
     if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmit') {
-      //   console.log('Form submission event:', event);
+      console.log(event.data);
+      const getFormId = event.data.id.toString();
+      const getFormUrl = document
+        .getElementById(`hsForm_${event.data.id}`)
+        .getAttribute('action')
+        .toString();
+
+      window.dataLayer = window.dataLayer || [];
+      dataLayer.push({
+        event: 'book_demo_form_submitted',
+        form_id: getFormId,
+        form_url: getFormUrl,
+      });
 
       if (event.data.id === config.formId) {
         const experienceValue = findFieldValue(event.data.data, config.experienceFieldName);

@@ -97,14 +97,14 @@ const resourceAnimations = {
 
   'is-blog-1': {
     initialStates: {
-      '.resource_blog-1-text': { y: '0rem' },
+      '.resource_blog-1-text': { height: 'auto' },
       '.resource_button-wrap': { display: 'none', opacity: 0 },
       '.resource_blog-1-image': { blur: '0rem', filter: 'blur(0rem)', webkitFilter: 'blur(0rem)' },
     },
     timelineActions: [
       {
         selectors: ['.resource_blog-1-text'],
-        props: { y: '-22rem', duration: DURATION_IN * 2, ease: EASE_IN },
+        props: { height: '100%', duration: DURATION_IN * 2, ease: EASE_IN },
       },
       {
         selectors: ['.resource_button-wrap'],
@@ -208,12 +208,17 @@ function initializeResourceAnimations(items = document) {
 
     // Apply animations to each card
     cards.forEach((card) => {
-      if (!card.dataset.animationInitialized) {
+      if (!card.dataset.animationInitialized && !isElementHidden(card)) {
         createHoverAnimation(card, config.initialStates, config.timelineActions);
         card.dataset.animationInitialized = 'true';
       }
     });
   });
+}
+
+function isElementHidden(element) {
+  const style = window.getComputedStyle(element);
+  return style.display === 'none';
 }
 
 // Initialize for initial document load
@@ -229,9 +234,11 @@ window.fsAttributes.push([
   (listInstances) => {
     const [listInstance] = listInstances;
 
-    listInstance.on('renderitems', (renderedItems) => {
-      // Apply animations to newly rendered items
-      initializeResourceAnimations(renderedItems);
-    });
+    if (listInstance) {
+      initializeResourceAnimations();
+      listInstance.on('renderitems', (renderedItems) => {
+        initializeResourceAnimations(renderedItems);
+      });
+    }
   },
 ]);

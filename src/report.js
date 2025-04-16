@@ -31,6 +31,19 @@ window.Webflow.push(() => {
 
   window.addEventListener('message', function (event) {
     if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmit') {
+      const getFormId = event.data.id.toString();
+      const getFormUrl = document
+        .getElementById(`hsForm_${event.data.id}`)
+        .getAttribute('action')
+        .toString();
+
+      window.dataLayer = window.dataLayer || [];
+      dataLayer.push({
+        event: 'download_report_form_submitted',
+        form_id: getFormId,
+        form_url: getFormUrl,
+      });
+
       document.querySelector('[fs-modal-element=close-2]').click();
       window.localStorage.setItem(pagePath, 'true');
       setTimeout(() => {
