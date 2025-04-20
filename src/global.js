@@ -238,7 +238,57 @@ window.Webflow.push(() => {
           //onFormSubmitted: (form, data) => {},
           onFormReady: (hubspotForm, data) => {
             ScrollTrigger.refresh();
-            console.log(hubspotForm[0]);
+
+            const raw_cookie = Cookies.get('stotles_utm');
+            const stotles_cookie = raw_cookie ? JSON.parse(raw_cookie) : undefined;
+
+            if (stotles_cookie) {
+              const firstPage = stotles_cookie.url ? `<${stotles_cookie.url}|Link>` : 'Unknown';
+              const utmParams = stotles_cookie.utmParams || {};
+
+              const referrerInput = hubspotForm[0].querySelector(
+                'input[name=stotles_referrer_url]'
+              );
+              if (referrerInput) {
+                referrerInput.value = stotles_cookie.referrer || 'Unknown';
+              }
+
+              const firstVisitInput = hubspotForm[0].querySelector(
+                'input[name=stotles_first_visit]'
+              );
+              if (firstVisitInput) {
+                firstVisitInput.value = firstPage || '';
+              }
+
+              const utmSourceInput = hubspotForm[0].querySelector('input[name=stotles_utm_source]');
+              if (utmSourceInput) {
+                utmSourceInput.value = utmParams['source'] || '';
+              }
+
+              const utmMediumInput = hubspotForm[0].querySelector('input[name=stotles_utm_medium]');
+              if (utmMediumInput) {
+                utmMediumInput.value = utmParams['medium'] || '';
+              }
+
+              const utmCampaignInput = hubspotForm[0].querySelector(
+                'input[name=stotles_utm_campaign]'
+              );
+              if (utmCampaignInput) {
+                utmCampaignInput.value = utmParams['campaign'] || '';
+              }
+
+              const utmContentInput = hubspotForm[0].querySelector(
+                'input[name=stotles_utm_content]'
+              );
+              if (utmContentInput) {
+                utmContentInput.value = utmParams['content'] || '';
+              }
+
+              const utmTermInput = hubspotForm[0].querySelector('input[name=stotles_utm_term]');
+              if (utmTermInput) {
+                utmTermInput.value = utmParams['term'] || '';
+              }
+            }
 
             // Track which fields have been interacted with and if form interaction has been logged
             const interactedFields = new Set();

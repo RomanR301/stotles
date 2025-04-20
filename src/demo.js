@@ -32,7 +32,6 @@ window.Webflow.push(() => {
   // Main event listener
   window.addEventListener('message', function (event) {
     if (event.data.type === 'hsFormCallback' && event.data.eventName === 'onFormSubmit') {
-      console.log(event.data);
       const getFormId = event.data.id.toString();
       const getFormUrl = document
         .getElementById(`hsForm_${event.data.id}`)
@@ -44,6 +43,7 @@ window.Webflow.push(() => {
         event: 'book_demo_form_submitted',
         form_id: getFormId,
         form_url: getFormUrl,
+        lead_id: localStorage.getItem('lead_id'),
       });
 
       if (event.data.id === config.formId) {

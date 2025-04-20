@@ -42,6 +42,7 @@ window.Webflow.push(() => {
         event: 'download_report_form_submitted',
         form_id: getFormId,
         form_url: getFormUrl,
+        lead_id: localStorage.getItem('lead_id'),
       });
 
       document.querySelector('[fs-modal-element=close-2]').click();
