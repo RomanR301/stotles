@@ -22,6 +22,13 @@ window.Webflow.push(() => {
     let scrollDistance = 0;
     let lastDirection = null;
 
+    function navIsOpen() {
+      return document.querySelectorAll('.nav_component .w-dropdown-toggle.w--open').length ||
+        document.querySelector('.nav_hamburger_close').style.display === 'block'
+        ? true
+        : false;
+    }
+
     // Create ScrollTrigger for nav hide/show behavior
     ScrollTrigger.create({
       start: 'top top',
@@ -42,7 +49,7 @@ window.Webflow.push(() => {
 
         // Only trigger animation after scrolling threshold distance in a direction
         if (scrollDistance > scrollThreshold) {
-          if (currentDirection === 'down' && navVisible) {
+          if (currentDirection === 'down' && navVisible && !navIsOpen()) {
             // Hide nav when scrolling down
             gsap.to(nav, {
               yPercent: -100,

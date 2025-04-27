@@ -79,7 +79,9 @@ window.Webflow.push(() => {
       (function initialize() {
         // Column and container setup
         gsap.set('.autotab_col1', { xPercent: -50, opacity: 0 });
+        const width = document.querySelector('.autotab_col1').clientWidth;
         gsap.set('.autotab_col2', { x: '-30rem' });
+        // gsap.set('.autotab_col2', { x: `-${width - 1.5 * 16}px` });
 
         // Image setup
         gsap.set(allImages, { opacity: 0, visibility: 'hidden' });

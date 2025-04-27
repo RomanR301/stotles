@@ -26,7 +26,7 @@ window.Webflow.push(() => {
 
   if (window.localStorage.getItem(pagePath) === 'true' || getUrlParameter('popup') === 'false') {
     document.querySelector('.sign-up_component').style.display = 'none';
-    document.querySelector('.rich-text-wrap').style.maxHeight = 'none';
+    document.querySelector('.section_report-content > div:first-child').style.maxHeight = 'none';
   }
 
   window.addEventListener('message', function (event) {
