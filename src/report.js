@@ -49,7 +49,8 @@ window.Webflow.push(() => {
       window.localStorage.setItem(pagePath, 'true');
       setTimeout(() => {
         document.querySelector('.sign-up_component').style.display = 'none';
-        document.querySelector('.rich-text-wrap').style.maxHeight = 'none';
+        document.querySelector('.section_report-content > div:first-child').style.maxHeight =
+          'none';
       }, 400);
     }
   });
