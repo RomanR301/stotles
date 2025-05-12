@@ -228,17 +228,16 @@ window.Webflow.push(() => {
 });
 
 // For the FSAttributes integration
-window.fsAttributes = window.fsAttributes || [];
-window.fsAttributes.push([
-  'cmsload',
+window.FinsweetAttributes ||= [];
+window.FinsweetAttributes.push([
+  'list',
   (listInstances) => {
     const [listInstance] = listInstances;
 
-    if (listInstance) {
-      initializeResourceAnimations();
-      listInstance.on('renderitems', (renderedItems) => {
-        initializeResourceAnimations(renderedItems);
-      });
-    }
+    initializeResourceAnimations();
+
+    listInstance.effect(() => {
+      initializeResourceAnimations(listInstance.items.value);
+    });
   },
 ]);

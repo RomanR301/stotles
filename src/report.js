@@ -107,4 +107,68 @@ window.Webflow.push(() => {
   /*-------------------------------------------------------*/
   /* VIDEO POPUP                                           */
   /*-------------------------------------------------------*/
+
+  window.FinsweetAttributes ||= [];
+  window.FinsweetAttributes.push([
+    'toc',
+
+    () => {
+      document.querySelectorAll('.section-heading_overline-wrap').forEach((overline) => {
+        // First, check if we're dealing with a DOM element
+        if (!(overline instanceof Element)) {
+          // console.error('Not a DOM element:', overline);
+          return;
+        }
+
+        // Find the container with fs-toc-element="contents"
+        const tocContainer = overline.closest('[fs-toc-element="contents"]');
+
+        if (!tocContainer) {
+          // console.log('Not inside a TOC container');
+          return;
+        }
+
+        // Get all direct child divs with IDs that have scroll-margin-top
+        const sections = Array.from(
+          tocContainer.querySelectorAll('div[id][style*="scroll-margin-top"]')
+        );
+
+        // Find the current section (the one containing our overline)
+        // or the first section if the overline is directly in the toc container
+        let currentSectionIndex = -1;
+
+        if (tocContainer.contains(overline) && overline.parentElement === tocContainer) {
+          // The overline is directly in the toc container
+          currentSectionIndex = -1; // Will target the first section
+        } else {
+          // Find which section contains our overline
+          for (let i = 0; i < sections.length; i++) {
+            if (sections[i].contains(overline)) {
+              currentSectionIndex = i;
+              break;
+            }
+          }
+        }
+
+        // Get the next section
+        const nextSection = sections[currentSectionIndex + 1];
+
+        // If we found a next section
+        if (nextSection) {
+          // console.log('Found next section:', nextSection.id);
+
+          // Clone the overline element
+          const overlineClone = overline.cloneNode(true);
+
+          // Insert at the beginning of the next section
+          nextSection.insertBefore(overlineClone, nextSection.firstChild);
+
+          // Remove the original
+          overline.remove();
+
+          // console.log('Moved overline element to next section');
+        }
+      });
+    },
+  ]);
 });

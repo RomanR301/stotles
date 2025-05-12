@@ -21,12 +21,12 @@ window.Webflow.push(() => {
         topRow.parentNode.appendChild(topRow);
 
         currentIndex = (currentIndex + 1) % totalRows;
-        setTimeout(animateText, 2250);
+        setTimeout(animateText, 1750);
       },
     });
   }
   // Start the animation loop
-  setTimeout(animateText, 2500);
+  setTimeout(animateText, 1500);
 
   const tabComponent = document.querySelector('.autotab_component');
 
