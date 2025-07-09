@@ -1,6 +1,6 @@
 import { gsap } from 'gsap';
 import CustomEase from 'gsap/CustomEase';
-
+alert('hey')
 gsap.registerPlugin(CustomEase);
 
 // Define constants and helper functions outside the Webflow push to make them globally available

@@ -3,9 +3,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Observer } from 'gsap/Observer';
 // import Swiper from 'swiper';
 // import { Keyboard, Mousewheel } from 'swiper/modules';
-alert('hey')
-gsap.registerPlugin(ScrollTrigger, Observer);
 
+gsap.registerPlugin(ScrollTrigger, Observer);
+alert('hey')
 window.Webflow ||= [];
 window.Webflow.push(() => {
   let mm = gsap.matchMedia();
