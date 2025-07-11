@@ -2,7 +2,6 @@ import { gsap } from 'gsap';
 import CustomEase from 'gsap/CustomEase';
 
 gsap.registerPlugin(CustomEase);
-alert('test')
 // Define constants and helper functions outside the Webflow push to make them globally available
 const DURATION_IN = 0.5;
 const DURATION_OUT = 0.5;
